@@ -1,3 +1,5 @@
 # vizdata
 Interactive data visualization mini project for the University of Helsinki course.
-This repository consists the source code for prod. build (front-end) for the app.
+[App on Heroku](https://dataviz5832.herokuapp.com/)
+
+## Spotify API
