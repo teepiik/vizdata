@@ -1,11 +1,12 @@
 import React from 'react'
+import spotify from './services/spotifyAPI'
 
 const App = () => {
-    let test = process.env.REACT_APP_TEST
-    console.log(test)
     return (
         <div>
             <p>Hello app</p>
+            <button onClick={() => spotify.getSpotifyAuth()}>Get Auth</button>
+            <button onClick={() => spotify.getTrack()}>Get Track</button>
         </div>
     )
 }
