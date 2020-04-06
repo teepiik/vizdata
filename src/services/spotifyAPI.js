@@ -1,16 +1,23 @@
 import axios from 'axios'
 import qs from 'qs'
 
-//const baseUrl = 'https://api.spotify.com/'
 const apicredentials = process.env.REACT_APP_BASIC
-let token = null
-let getOptionsBase = {
-    method: 'GET',
-    headers: {
-        'content-type': 'application/x-www-form-urlencoded',
-        'authorization': `Bearer ${token}`
-    },
-    url: ''
+
+// https://developer.spotify.com/documentation/web-api/reference/playlists/
+
+/* IDEA, several TOP50 official playlists, analyze genres of the songs
+
+    FINLAND50 uri spotify:playlist:37i9dQZEVXbMxcczTSoGwZ
+    */
+const setConfig = (token) => {
+    return {
+        method: 'GET',
+        headers: {
+            'content-type': 'application/x-www-form-urlencoded',
+            'authorization': `Bearer ${token}`
+        },
+        url: ''
+    }
 }
 
 
@@ -29,18 +36,26 @@ const getSpotifyAuth = async () => {
 
         const res = await axios(options)
         console.log(res.data)
-        token = res.data.access_token
-        return res.data
+        return res.data.access_token
 
     } catch (error) {
         console.log(error)
     }
 }
 
-const getTrack = async () => {
-    const res = await axios({ ...getOptionsBase, url: 'https://api.spotify.com/v1/tracks/2TpxZ7JUBn3uw46aR7qd6V' })
+const getTrack = async (trackId, token) => {
+    const optionsBase = setConfig(token)
+    console.log({ ...optionsBase, url: `https://api.spotify.com/v1/tracks/${trackId}` })
+    const res = await axios({ ...optionsBase, url: `https://api.spotify.com/v1/tracks/${trackId}` })
     console.log(res.data)
     return res.data
 }
 
-export default { getSpotifyAuth, getTrack }
+const getPlaylist = async (playlistId, token) => {
+    const optionsBase = setConfig(token)
+    const res = await axios({ ...optionsBase, url: `https://api.spotify.com/v1/playlists/${playlistId}` })
+    console.log(res.data)
+    return res.data
+}
+
+export default { getSpotifyAuth, getTrack, getPlaylist }
