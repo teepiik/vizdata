@@ -47,14 +47,12 @@ const getTrack = async (trackId, token) => {
     const optionsBase = setConfig(token)
     console.log({ ...optionsBase, url: `https://api.spotify.com/v1/tracks/${trackId}` })
     const res = await axios({ ...optionsBase, url: `https://api.spotify.com/v1/tracks/${trackId}` })
-    console.log(res.data)
     return res.data
 }
 
 const getPlaylist = async (playlistId, token) => {
     const optionsBase = setConfig(token)
     const res = await axios({ ...optionsBase, url: `https://api.spotify.com/v1/playlists/${playlistId}` })
-    console.log(res.data)
     return res.data
 }
 
