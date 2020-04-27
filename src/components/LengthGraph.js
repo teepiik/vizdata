@@ -18,7 +18,7 @@ const LengthGraph = ({ data }) => {
     const parentWidth = 1000
 
     const margins = {
-        top: 50,
+        top: 10,
         right: 50,
         bottom: 50,
         left: 50,
@@ -46,6 +46,7 @@ const LengthGraph = ({ data }) => {
 
     return (
         <div>
+            <h3>Duration</h3>
             <svg
                 className="lineChartSvg"
                 width={width + margins.left + margins.right}
