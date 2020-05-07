@@ -50,7 +50,6 @@ const App = () => {
     }
 
     const handleRadioChange = (e) => {
-        //e.preventDefault()
         if(e.target.value==='fin') {
             setPresentList(finList)
         }

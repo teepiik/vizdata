@@ -3,18 +3,6 @@ import * as d3 from 'd3'
 
 class BarChart extends Component {
     componentDidMount() {
-        /*
-        const { data } = this.props
-        //console.log(data)
-        if(data!=='') {
-            console.log(data)
-            const parsed = data.map(d => d.length)
-            this.drawBarChart(parsed)
-        }*/
-        ////
-        // JATKA TÄSTÄ: DATA IMPORT EI TOIMI
-        // Todnäk { data } väärä tjsp
-        ////
         const data = [ 2, 5, 6, 4]
         this.drawBarChart(data)
     }
@@ -50,8 +38,6 @@ class BarChart extends Component {
             .attr('fill', 'black')
             .attr('x', (datapoint, iteration) => iteration * 45)
             .attr('y', (datapoint) => canvasHeight - datapoint * scale)
-
-        // add data labels
     }
     render() { return <div ref='canvas'></div> }
 }
