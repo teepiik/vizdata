@@ -2,7 +2,7 @@ const mapApiListResponse = (response) => {
     let pos = 0
 
     // Forms an object
-    const helper = (track) => {
+    const helper = track => {
         pos = pos + 1
         return {
             position: pos,
@@ -15,4 +15,15 @@ const mapApiListResponse = (response) => {
     return mapped
 }
 
-export default { mapApiListResponse }
+const mapForBarChart = data => {
+    const helper = track => {
+        return {
+            position: track.position,
+            value: track.popularity
+        }
+    }
+    const mapped = data.map(t => helper(t))
+    return mapped
+}
+
+export default { mapApiListResponse, mapForBarChart }

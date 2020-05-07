@@ -1,45 +1,108 @@
-import React, { Component } from 'react'
+import React, { useEffect, useRef } from 'react'
 import * as d3 from 'd3'
 
-class BarChart extends Component {
-    componentDidMount() {
-        const data = [ 2, 5, 6, 4]
-        this.drawBarChart(data)
-    }
+// Bottom axis
+const XAxis = ({ top, bottom, left, right, height, scale }) => {
+    const axis = useRef(null)
+    useEffect(() => {
+        d3.select(axis.current).call(d3.axisBottom(scale))
+    })
 
-    componentDidUpdate() {
-        const { data } = this.props
-        if(data=== '' || data === undefined) {
-            return null
-        }
-        console.log(data)
-        const parsed = data.map(d => d.position)
-        this.drawBarChart(parsed)
-    }
+    return (
+        <g
+            className='axis x'
+            ref={axis}
+            transform={`translate(${left}, ${height - bottom})`}
+        />
+    )
+}
 
-    drawBarChart(data) {
-        console.log('data')
-        console.log(data)
-        const canvasHeight = 400
-        const canvasWidth = 600
-        const scale = 20
+// Left axis
+const YAxis = ({ top, bottom, left, right, height, scale }) => {
+    const axis = useRef(null)
+    useEffect(() => {
+        d3.select(axis.current).call(d3.axisLeft(scale))
+    })
 
-        const svgCanvas = d3.select(this.refs.canvas)
-            .append('svg')
-            .attr('width', canvasWidth)
-            .attr('height', canvasHeight)
-            .style('border', '1px solid black')
+    return (
+        <g
+            className='axis y'
+            ref={axis}
+            transform={`translate(${left}, ${top})`}
+        />
+    )
+}
 
-        svgCanvas.selectAll('rect')
-            .data(data).enter()
-            .append('rect')
-            .attr('width', 40)
-            .attr('height', (datapoint) => datapoint * scale)
-            .attr('fill', 'black')
-            .attr('x', (datapoint, iteration) => iteration * 45)
-            .attr('y', (datapoint) => canvasHeight - datapoint * scale)
-    }
-    render() { return <div ref='canvas'></div> }
+const Rect = ({ data, x, y, height, top, bottom }) => {
+    return (
+        <g transform={`translate(${x(data.position)}, ${y(data.value)})`}>
+            <rect
+                width={x.bandwidth()}
+                height={height - bottom - top - y(data.value)}
+                className='bar'
+            />
+            <text
+                transform={`translate(${x.bandwidth() / 2}, ${-2})`}
+                textAnchor='middle'
+                alignmentBaseline='baseline'
+                fill='black'
+                fontSize='10'
+            >
+                {data.value}
+            </text>
+        </g>
+    )
+}
+
+const BarChart = props => {
+    const data = [...props.data]
+    if(data === '') return null
+
+    const x = d3
+        .scaleBand()
+        .range([0, props.width - props.left - props.right])
+        .domain(data.map(d => d.position))
+        .padding(0.2)
+
+    const y = d3
+        .scaleLinear()
+        .range([props.height - props.top - props.bottom, 0])
+        .domain([0, d3.max(data, d => d.value)])
+
+    return (
+        <div>
+            <svg width={props.width} height={props.height}>
+                <XAxis
+                    scale={x}
+                    top={props.top}
+                    bottom={props.bottom}
+                    left={props.left}
+                    right={props.right}
+                    height={props.height}
+                />
+                <YAxis
+                    scale={y}
+                    top={props.top}
+                    bottom={props.bottom}
+                    left={props.left}
+                    right={props.right}
+                />
+                <g transform={`translate(${props.left}, ${props.top})`}>
+                    {data.map((d, i) => (
+                        <Rect
+                            data={d}
+                            key={d.position}
+                            x={x}
+                            y={y}
+                            top={props.top}
+                            bottom={props.bottom}
+                            height={props.height}
+                        />
+                    ))}
+                </g>
+            </svg>
+        </div>
+    )
 }
 
 export default BarChart
