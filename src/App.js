@@ -3,6 +3,7 @@ import spotify from './services/spotifyAPI'
 import mapper from './services/dataMapper'
 import LengthGraph from './components/LengthGraph'
 import PickList from './components/PickList'
+import BarChart from './components/BarChart'
 
 const App = () => {
     const [token, setToken] = useState('')
@@ -69,6 +70,7 @@ const App = () => {
             <p>This page contains few data visualizations of example tracklists on Spotify.</p>
             <PickList handleRadioChange={handleRadioChange} />
             <LengthGraph data={presentList} />
+            <BarChart data={presentList} />
         </div>
     )
 }

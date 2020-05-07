@@ -13,8 +13,6 @@ const LengthGraph = ({ data }) => {
         return null
     }
 
-    console.log(data)
-
     const parentWidth = 1000
 
     const margins = {

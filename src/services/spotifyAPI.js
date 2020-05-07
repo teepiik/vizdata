@@ -5,10 +5,6 @@ const apicredentials = process.env.REACT_APP_BASIC
 
 // https://developer.spotify.com/documentation/web-api/reference/playlists/
 
-/* IDEA, several TOP50 official playlists, analyze genres of the songs
-
-    FINLAND50 uri spotify:playlist:37i9dQZEVXbMxcczTSoGwZ
-    */
 const setConfig = (token) => {
     return {
         method: 'GET',
@@ -35,7 +31,6 @@ const getSpotifyAuth = async () => {
         }
 
         const res = await axios(options)
-        console.log(res.data)
         return res.data.access_token
 
     } catch (error) {
