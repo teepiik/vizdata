@@ -33,6 +33,7 @@ const App = () => {
         if(finList==='') {
             const finList = await loadList('37i9dQZEVXbMxcczTSoGwZ')
             setFinList(finList)
+            setPresentList(finList) // quick fix for initial load
         }
 
         if(ukList==='') {
@@ -71,15 +72,14 @@ const App = () => {
     }
 
     return (
-        <div>
+        <div className='container'>
             <h1>DataViz</h1>
             <p>This page contains few data visualizations of example tracklists on Spotify.</p>
             <PickList handleRadioChange={handleRadioChange} />
-            <LengthGraph data={presentList} />
             <BarChart
                 data={mappedList}
                 width={1000}
-                height={400}
+                height={200}
                 top={20}
                 bottom={30}
                 left={30}
