@@ -15,15 +15,24 @@ const mapApiListResponse = (response) => {
     return mapped
 }
 
-const mapForBarChart = data => {
+const mapPopularity = data => {
     const helper = track => {
         return {
             position: track.position,
             value: track.popularity
         }
     }
-    const mapped = data.map(t => helper(t))
-    return mapped
+    return data.map(t => helper(t))
 }
 
-export default { mapApiListResponse, mapForBarChart }
+const mapDuration = data => {
+    const helper = track => {
+        return {
+            position: track.position,
+            value: track.duration / 1000
+        }
+    }
+    return data.map(t => helper(t))
+}
+
+export default { mapApiListResponse, mapPopularity, mapDuration }

@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import spotify from './services/spotifyAPI'
 import mapper from './services/dataMapper'
-import LengthGraph from './components/LengthGraph'
 import PickList from './components/PickList'
 import BarChart from './components/BarChart'
 import './App.css'
-import * as d3 from 'd3'
 
 const App = () => {
     const [token, setToken] = useState('')
@@ -22,7 +20,7 @@ const App = () => {
         fetchData()
     }, [])
 
-    // NOTE needs to have update / refresh option too
+    // NOTE have update / refresh option too
     const handleListLoads = async () => {
         const loadList = async (url) => {
             let list = await spotify.getPlaylist(url, token)
@@ -47,7 +45,7 @@ const App = () => {
         }
     }
 
-    // Handles initial load for FinTOP50 (Default first list) NOT CURRENTLY
+    // Handles initial load for FinTOP50 (Default first list)
     if(token !== '') {
         handleListLoads()
     }
@@ -66,9 +64,12 @@ const App = () => {
         }
     }
 
-    let mappedList = [{ position: 0, value: 10 }] // to prevent null pointer error
+    let mappedPopularity = [{ position: 0, value: 10 }] // to prevent null pointer error
+    let mappedDuration = [{ position: 0, value: 10 }]
     if(presentList !== '') {
-        mappedList = mapper.mapForBarChart(presentList)
+        mappedPopularity = mapper.mapPopularity(presentList)
+        mappedDuration = mapper.mapDuration(presentList)
+        console.log(presentList)
     }
 
     return (
@@ -77,7 +78,18 @@ const App = () => {
             <p>This page contains few data visualizations of example tracklists on Spotify.</p>
             <PickList handleRadioChange={handleRadioChange} />
             <BarChart
-                data={mappedList}
+                label={'Popularity'}
+                data={mappedPopularity}
+                width={1000}
+                height={200}
+                top={20}
+                bottom={30}
+                left={30}
+                right={0}
+            />
+            <BarChart
+                label={'Duration (in seconds)'}
+                data={mappedDuration}
                 width={1000}
                 height={200}
                 top={20}

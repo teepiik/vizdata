@@ -33,7 +33,7 @@ const YAxis = ({ top, bottom, left, right, height, scale }) => {
     )
 }
 
-const Rect = ({ data, x, y, height, top, bottom }) => {
+const Rect = ({ data, x, y, height, top, bottom, label }) => {
     return (
         <g transform={`translate(${x(data.position)}, ${y(data.value)})`}>
             <rect
@@ -41,6 +41,7 @@ const Rect = ({ data, x, y, height, top, bottom }) => {
                 height={height - bottom - top - y(data.value)}
                 className='bar'
             />
+            {label !== 'Duration (in seconds)' &&
             <text
                 transform={`translate(${x.bandwidth() / 2}, ${-2})`}
                 textAnchor='middle'
@@ -50,6 +51,7 @@ const Rect = ({ data, x, y, height, top, bottom }) => {
             >
                 {data.value}
             </text>
+            }
         </g>
     )
 }
@@ -71,6 +73,7 @@ const BarChart = props => {
 
     return (
         <div>
+            <h3>{props.label}</h3>
             <svg width={props.width} height={props.height}>
                 <XAxis
                     scale={x}
@@ -97,6 +100,7 @@ const BarChart = props => {
                             top={props.top}
                             bottom={props.bottom}
                             height={props.height}
+                            label={props.label}
                         />
                     ))}
                 </g>
